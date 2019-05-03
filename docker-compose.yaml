@@ -13,9 +13,6 @@ services:
   crud-mysql-vuejs:
     image: 'lovescloud/crud-mysql-vuejs'
     build: .
-    volumes:
-    - .:/app
-    - ~/.m2:/root/.m2
     ports:
     - 8080:8080
     labels:
