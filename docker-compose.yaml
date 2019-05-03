@@ -19,6 +19,8 @@ services:
     - ~/.m2:/root/.m2
     ports:
     - 8080:8080
+    labels:
+     kompose.service.type: NodePort
     command: mvn clean spring-boot:run
     depends_on:
     - hk-mysql
