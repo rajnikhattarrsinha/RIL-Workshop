@@ -53,8 +53,8 @@ node {
    }
 
    stage('Trigger-Deploy') {
+      sh label: '', script: 'sed -i \'s/IMAGE/lovescloud/crud-mysql-vuejs:\'${BUILD_NUMBER}\'/\' docker-compose.yaml'
       sh"""#!/bin/bash
-      sed -i 's/IMAGE/lovescloud/crud-mysql-vuejs:'${BUILD_NUMBER}'/g' docker-compose.yaml
       cat docker-compose.yaml
       kompose convert
       sudo mkdir ${BUILD_NUMBER}-kompose/
