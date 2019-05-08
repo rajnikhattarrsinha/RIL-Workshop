@@ -2,8 +2,9 @@ node {
       
 
    stage('Trigger-Deploy') {
+   sh label: '', script: '''sed -i \'s/IMAGE/lovescloud\\/crud-mysql-vuejs:\'${BUILD_NUMBER}\'/\' docker-compose.yaml
+'''
       sh"""#!/bin/bash
-      sh label: '', script: 'sed -i \'s/IMAGE/lovescloud/crud-mysql-vuejs:\'${BUILD_NUMBER}\'/\' docker-compose.yaml'      
       cat docker-compose.yaml
       sleep 10
       """
