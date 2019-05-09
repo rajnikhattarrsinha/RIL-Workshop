@@ -77,7 +77,9 @@ node {
       cleanWs disableDeferredWipeout: true, notFailBuild: true
    }
    } catch(Exception e) {
-      
+      print "Error"
+      print e
+      raise e
    }
 
 }
