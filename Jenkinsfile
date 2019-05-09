@@ -1,4 +1,5 @@
 node {
+   try {
    def mvnHome
    def scannerHome
    stage('Prepare') {
@@ -69,10 +70,14 @@ node {
 
       sleep 10
       """
+      jiraNotifyIssue failOnError: false, site: 'LC-Jira'
    }
 
    stage('Cleanup') {
       cleanWs disableDeferredWipeout: true, notFailBuild: true
+   }
+   } catch(Exception e) {
+      
    }
 
 }
