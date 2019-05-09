@@ -86,12 +86,8 @@ node {
    stage('Cleanup') {
       //getCommitMsg()
       def commit = sh(returnStdout: true, script: 'git log -1 --pretty=%B | cat')
-          def matcher = (commit =~ '([a-zA-Z][a-zA-Z0-9_]+-[1-9][0-9]*)([^.]|\.[^0-9]|\.$|$)')
-    print matcher
-          if (matcher)
-          {
-            //mail bcc: '', body: 'BUILD_URL', cc: '', from: '', replyTo: '', subject: matcher[0][1]+'Build was successfully', to: 'jira@example.com'
-          }
+      def matcher = (commit =~ '([a-zA-Z][a-zA-Z0-9_]+-[1-9][0-9]*)([^.]|\.[^0-9]|\.$|$)')
+      print matcher
       cleanWs disableDeferredWipeout: true, notFailBuild: true
    }
    } catch(Exception e) {
