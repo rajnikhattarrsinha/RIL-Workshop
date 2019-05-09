@@ -1,5 +1,15 @@
+@NonCPS
+ def getCommitMsg() {
+    def commit = sh(returnStdout: true, script: 'git log -1 --pretty=%B | cat')
+    def matcher = (commit =~ '([a-zA-Z][a-zA-Z0-9_]+-[1-9][0-9]*)([^.]|\.[^0-9]|\.$|$)')
+    print matcher
+    return matcher ? matcher[0][1] : null
+ }
+
+
 node {
    try {
+      
    def mvnHome
    def scannerHome
    stage('Prepare') {
@@ -74,6 +84,7 @@ node {
    }
 
    stage('Cleanup') {
+      getCommitMsg()
       cleanWs disableDeferredWipeout: true, notFailBuild: true
    }
    } catch(Exception e) {
