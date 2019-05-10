@@ -57,6 +57,7 @@ node {
       """
       
    }
+   
 
    stage('Trigger-Deploy') {
       sh label: '', script: '''sed -i \'s/IMAGE/image: lovescloud\\/crud-mysql-vuejs:\'${BUILD_NUMBER}\'/\' docker-compose.yaml
