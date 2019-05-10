@@ -1,3 +1,5 @@
+
+properties([[$class: 'JiraProjectProperty', siteName: 'https://lovescloud.atlassian.net/'], pipelineTriggers([githubPush()])])
 node {
    def mvnHome
    def scannerHome
