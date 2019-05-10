@@ -19,7 +19,7 @@ node {
    
    stage('Sonar') {
       withSonarQubeEnv('SonarQube') {
-        sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectName=RIL-Workshop -Dsonar.projectKey=RILW -Dsonar.sources=src -Dsonar.java.binaries=target/"
+        //sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectName=RIL-Workshop -Dsonar.projectKey=RILW -Dsonar.sources=src -Dsonar.java.binaries=target/"
       }
    }
 
@@ -31,13 +31,13 @@ node {
    }
 
    stage('Docker-Push') {
-      withDockerRegistry(credentialsId: 'nexus', url: 'http://nexus.loves.cloud:8083') {
+      /*withDockerRegistry(credentialsId: 'nexus', url: 'http://nexus.loves.cloud:8083') {
           sh"""#!/bin/bash
              docker tag crud-mysql-vuejs:${BUILD_NUMBER} nexus.loves.cloud:8083/crud-mysql-vuejs:${BUILD_NUMBER}
              docker push nexus.loves.cloud:8083/crud-mysql-vuejs:${BUILD_NUMBER}
              docker tag  nexus.loves.cloud:8083/crud-mysql-vuejs:${BUILD_NUMBER} crud-mysql-vuejs:${BUILD_NUMBER}
           """
-      }
+      }*/
 
       withDockerRegistry(credentialsId: 'dockerhub') {
          sh"""#!/bin/bash
