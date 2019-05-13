@@ -83,5 +83,10 @@ node {
       cleanWs disableDeferredWipeout: true, notFailBuild: true
    }
    
+   post{
+      always{
+         mail bcc: '', body: 'Test Body', cc: '', from: '', replyTo: '', subject: 'Test Subject', to: 'rajni@loves.cloud'
+      }
+   }
 
 }
