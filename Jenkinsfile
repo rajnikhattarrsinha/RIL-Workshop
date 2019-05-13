@@ -1,7 +1,7 @@
  properties([[$class: 'JiraProjectProperty', siteName: 'https://lovescloud.atlassian.net/'], pipelineTriggers([githubPush()])])
  node {
-   try {
-     notifyBuild('STARTED')
+   //try {
+    // notifyBuild('STARTED')
  
      /* ... existing build steps ... */
      def mvnHome
@@ -85,9 +85,20 @@
       
       cleanWs disableDeferredWipeout: true, notFailBuild: true
    }
+  
+  post {
+        always {
+            echo 'I will always say Hello again!'
+            
+            emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+            
+        }
+    }
 
  
-   } catch (e) {
+  /* } catch (e) {
      // If there was an exception thrown, the build failed
      currentBuild.result = "FAILED"
      throw e
@@ -96,8 +107,8 @@
      notifyBuild(currentBuild.result)
    }
  }
- 
- def notifyBuild(String buildStatus = 'STARTED') {
+ */
+/* def notifyBuild(String buildStatus = 'STARTED') {
    // build status of null means successful
    buildStatus =  buildStatus ?: 'SUCCESSFUL'
  
@@ -131,4 +142,5 @@
        body: details,
        recipientProviders: [[$class: 'DevelopersRecipientProvider']]
      )
+     */
  }
