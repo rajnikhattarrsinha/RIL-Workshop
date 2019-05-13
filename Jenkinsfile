@@ -82,5 +82,12 @@ node {
       
       cleanWs disableDeferredWipeout: true, notFailBuild: true
    }
+   
+   emailext (
+    subject: "Job '${env.JOB_NAME} ${env.BUILD_NUMBER} ${env.BUILD_STATUS}'",
+    body: """<p>Check console output at <a href="${env.BUILD_URL}">${env.JOB_NAME}</a></p>""",
+    to: "rajni@loves.cloud",
+    from: "jenkins@jenkins"
+)
 
 }
