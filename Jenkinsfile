@@ -3,7 +3,7 @@ properties([[$class: 'JiraProjectProperty', siteName: 'https://lovescloud.atlass
 node {
    def mvnHome
    def scannerHome
-   stage('Prepare') {
+   stage('SCM CheckOut') {
       cleanWs disableDeferredWipeout: true, notFailBuild: true
       git branch: 'develop', url: 'https://github.com/LovesCloud/RIL-Workshop.git'           
       mvnHome = tool 'M3'
@@ -14,7 +14,7 @@ node {
       scannerHome = tool 'sonar_scanner';
    }
 
-   stage('Build') {
+   stage('Maven Build') {
       sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
         
    }
@@ -23,20 +23,20 @@ node {
       sh "'${mvnHome}/bin/mvn' test surefire-report:report"
    }
    
-   stage('Sonar') {
+   stage('Sonar Code Analysis') {
       withSonarQubeEnv('SonarQube') {
         sh "${scannerHome}/bin/sonar-scanner -e -Dsonar.projectName=RIL-Workshop -Dsonar.projectKey=RILW -Dsonar.sources=src -Dsonar.java.binaries=target/"
       }
    }
 
 
-   stage('Docker-Build') {
+   stage('Docker Build') {
       sh"""#!/bin/bash
          docker build . -t crud-mysql-vuejs:${BUILD_NUMBER}
       """
    }
 
-   stage('Docker-Push') {
+   stage('Nexus-Push') {
       /*withDockerRegistry(credentialsId: 'nexus', url: 'http://nexus.loves.cloud:8083') {
           sh"""#!/bin/bash
              docker tag crud-mysql-vuejs:${BUILD_NUMBER} nexus.loves.cloud:8083/crud-mysql-vuejs:${BUILD_NUMBER}
@@ -59,7 +59,7 @@ node {
    }
    
 
-   stage('Trigger-Deploy') {
+   stage('Deploy') {
       sh label: '', script: '''sed -i \'s/IMAGE/image: lovescloud\\/crud-mysql-vuejs:\'${BUILD_NUMBER}\'/\' docker-compose.yaml
 '''
       sh"""#!/bin/bash
